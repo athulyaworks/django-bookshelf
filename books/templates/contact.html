@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+  <style>
+    .contact-section {
+      max-width: 700px;
+      margin: 60px auto;
+      background-color: #fffaf5;
+      border: 1px solid #f0e6df;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .contact-section h2 {
+      font-family: 'Georgia', serif;
+      color: #5a3e36;
+      margin-bottom: 20px;
+    }
+
+    .contact-section p {
+      color: #6e584b;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .contact-section a {
+      color: #0d6efd;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-section a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+  <div class="contact-section">
+    <h2>Contact Us</h2>
+    <p>
+      Need help or have suggestions? <br>
+      Reach out at: <br>
+      <a href="mailto:athulya@gmail.com">athulya@gmail.com</a> 💌
+    </p>
+  </div>
+{% endblock %}

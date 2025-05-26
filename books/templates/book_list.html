@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <h2>My Book Collection</h2>
+    <a href="{% url 'add_book' %}" class="btn btn-primary mb-3">Add Book</a>
+    <ul class="list-group">
+      {% for book in books %}
+        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+          <div>
+            <strong>{{ book.title }}</strong> by {{ book.author }}<br>
+            {% if book.genre %}
+              <small class="text-muted">Genre: {{ book.genre.name }}</small>
+            {% endif %}
+          </div>
+          <div class="mt-2 mt-sm-0 text-end">
+            <div>
+              {% if book.is_read %}
+                ✅ Read
+              {% else %}
+                ❌ Not Read
+              {% endif %}
+              <a href="{% url 'toggle_read' book.id %}" class="btn btn-sm btn-outline-secondary ms-2">Toggle</a>
+            </div>
+            <div class="mt-2">
+              {% if book.is_favourite %}
+                ⭐ Favourite
+              {% else %}
+                ☆ Not Favourite
+              {% endif %}
+              <a href="{% url 'toggle_favourite' book.id %}" class="btn btn-sm btn-outline-warning ms-2">Fav</a>
+            </div>
+            <a href="{% url 'delete_book' book.id %}" class="btn btn-sm btn-danger ms-2 mt-2" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
+          </div>
+        </li>
+      {% empty %}
+        <li class="list-group-item">No books added yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="mb-4">📖 My Shelf</h2>
+    <p>Your personal virtual shelf to track books you've marked as favourites.</p>
+
+    <ul class="list-group">
+      {% for book in favourite_books %}
+        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+          <div>
+            <strong>{{ book.title }}</strong> by {{ book.author }}<br>
+            {% if book.genre %}
+              <small class="text-muted">Genre: {{ book.genre.name }}</small>
+            {% endif %}
+          </div>
+          <div class="mt-2 mt-sm-0">
+            {% if book.is_read %}
+              ✅ Read
+            {% else %}
+              ❌ Not Read
+            {% endif %}
+            <a href="{% url 'toggle_read' book.id %}" class="btn btn-sm btn-outline-secondary ms-2">Toggle</a>
+          </div>
+        </li>
+      {% empty %}
+        <li class="list-group-item">No favourite books added to your shelf yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

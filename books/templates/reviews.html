@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="mb-4">🌟 Reader Reviews</h2>
+    <p>See what readers are saying about the books they’ve loved (or loathed) lately.</p>
+
+    <form method="POST" class="mb-4">
+      {% csrf_token %}
+      <div class="mb-3">
+        {{ form.book.label_tag }} {{ form.book }}
+      </div>
+      <div class="mb-3">
+        {{ form.reviewer_name.label_tag }} {{ form.reviewer_name }}
+      </div>
+      <div class="mb-3">
+        {{ form.comment.label_tag }} {{ form.comment }}
+      </div>
+      <button type="submit" class="btn btn-primary">Submit Review</button>
+    </form>
+
+    <hr>
+
+    <ul class="list-group">
+      {% for review in all_reviews %}
+        <li class="list-group-item">
+          <strong>{{ review.book.title }}</strong> – Reviewed by {{ review.reviewer_name }}<br>
+          <small class="text-muted">{{ review.created_at|date:"M d, Y H:i" }}</small>
+          <p class="mt-2">{{ review.comment }}</p>
+        </li>
+      {% empty %}
+        <li class="list-group-item">No reviews yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+  <style>
+    .about-section {
+      max-width: 700px;
+      margin: 60px auto;
+      background-color: #fffaf5;
+      border: 1px solid #f0e6df;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .about-section h2 {
+      font-family: 'Georgia', serif;
+      color: #5a3e36;
+      margin-bottom: 20px;
+    }
+
+    .about-section p {
+      color: #6e584b;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .about-section span {
+      font-size: 1.5rem;
+    }
+  </style>
+
+  <div class="about-section">
+    <h2>About BookShelf</h2>
+    <p>
+      <span>📚</span> BookShelf helps you keep track of your personal library — whether you're a casual reader or a bookworm!
+      <br><br>
+      This app is built with 💙 using Django. It's designed to feel warm, welcoming, and organized, just like your dream bookshelf.
+    </p>
+  </div>
+{% endblock %}

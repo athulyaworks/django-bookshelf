@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    .add-book-container {
+      max-width: 600px;
+      margin: 60px auto;
+      background-color: #fffaf5;
+      border: 1px solid #f0e6df;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .add-book-container h2 {
+      font-family: 'Georgia', serif;
+      color: #5a3e36;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .add-book-container label {
+      color: #6e584b;
+      font-weight: 500;
+    }
+
+    .add-book-container input,
+    .add-book-container select,
+    .add-book-container textarea {
+      border-radius: 5px;
+      border: 1px solid #d8cfc7;
+      padding: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+      background-color: #fdf8f4;
+    }
+
+    .add-book-container button {
+      background-color: #bfa28f;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 6px;
+      display: block;
+      margin: auto;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-book-container button:hover {
+      background-color: #a78c7b;
+    }
+  </style>
+
+  <div class="add-book-container">
+    <h2>Add a New Book</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Add Book</button>
+    </form>
+  </div>
+{% endblock %}

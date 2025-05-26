@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4" style="font-family:'Georgia', serif;">Books by Genre</h2>
+
+  {% for genre in genres %}
+    <div class="mb-4 p-3 shadow rounded bg-light">
+      <h4 class="text-primary">{{ genre.name }}</h4>
+      
+      {% if genre.book_set.all %}
+        {% if genre.book_set.all.count > 0 %}
+          <ul class="list-group">
+            {% for book in genre.book_set.all %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ book.title }} by {{ book.author }}
+                <span>
+                  {% if book.is_read %}
+                    ✅ Read
+                  {% else %}
+                    ❌ Not Read
+                  {% endif %}
+                </span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No books in this genre yet.</p>
+        {% endif %}
+      {% else %}
+        <p>No books in this genre yet.</p>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
