@@ -1,11 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  <style>
+    .favourite-count {
+      font-size: 0.9rem;
+      color: #5a3e36;
+      background-color: #f2e7dc;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-weight: 500;
+      float: right;
+      margin-top: -40px;
+    }
+  </style>
+
   <div class="container">
-    <h2 class="mb-4">📖 My Shelf</h2>
+    <h2 class="mb-1">📖 My Shelf</h2>
+    <div class="favourite-count">
+      Favourites: <strong>{{ favourite_books|length }}</strong>
+    </div>
     <p>Your personal virtual shelf to track books you've marked as favourites.</p>
 
-    <ul class="list-group">
+    <ul class="list-group mt-3">
       {% for book in favourite_books %}
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
           <div>

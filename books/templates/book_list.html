@@ -1,8 +1,21 @@
 {% extends 'base.html' %}
+
 {% block content %}
   <div class="container">
     <h2>My Book Collection</h2>
-    <a href="{% url 'add_book' %}" class="btn btn-primary mb-3">Add Book</a>
+
+    <!-- Search Form -->
+    <form method="get" class="mb-3">
+      <div class="input-group">
+        <input type="text" name="q" placeholder="Search by title..." class="form-control" value="{{ query|default:'' }}">
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+      </div>
+    </form>
+
+    <!-- Add Book Button -->
+    <a href="{% url 'add_book' %}" class="btn btn-primary mb-3">+ Add</a>
+
+    <!-- Book List -->
     <ul class="list-group">
       {% for book in books %}
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -12,28 +25,35 @@
               <small class="text-muted">Genre: {{ book.genre.name }}</small>
             {% endif %}
           </div>
+          
           <div class="mt-2 mt-sm-0 text-end">
-            <div>
-              {% if book.is_read %}
-                ✅ Read
-              {% else %}
-                ❌ Not Read
-              {% endif %}
-              <a href="{% url 'toggle_read' book.id %}" class="btn btn-sm btn-outline-secondary ms-2">Toggle</a>
-            </div>
-            <div class="mt-2">
-              {% if book.is_favourite %}
-                ⭐ Favourite
-              {% else %}
-                ☆ Not Favourite
-              {% endif %}
-              <a href="{% url 'toggle_favourite' book.id %}" class="btn btn-sm btn-outline-warning ms-2">Fav</a>
-            </div>
-            <a href="{% url 'delete_book' book.id %}" class="btn btn-sm btn-danger ms-2 mt-2" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
+
+            <!-- Read Status Toggle -->
+            <a href="{% url 'toggle_read' book.id %}" 
+               class="btn btn-sm btn-outline-secondary" 
+               title="{% if book.is_read %}Mark as unread{% else %}Mark as read{% endif %}">
+               {% if book.is_read %}📖{% else %}📕{% endif %}
+            </a>
+
+            <!-- Favourite Toggle -->
+            <a href="{% url 'toggle_favourite' book.id %}" 
+               class="btn btn-sm btn-outline-warning ms-2" 
+               title="{% if book.id in favourite_ids %}Remove favourite{% else %}Add favourite{% endif %}">
+               {% if book.id in favourite_ids %}⭐{% else %}☆{% endif %}
+            </a>
+
+            <!-- Delete Button -->
+            <a href="{% url 'delete_book' book.id %}" 
+               class="btn btn-sm btn-danger ms-2" 
+               title="Delete book"
+               onclick="return confirm('Are you sure you want to delete this book?')">
+               🗑️
+            </a>
+
           </div>
         </li>
       {% empty %}
-        <li class="list-group-item">No books added yet.</li>
+        <li class="list-group-item">No books found.</li>
       {% endfor %}
     </ul>
   </div>

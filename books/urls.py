@@ -18,4 +18,7 @@ urlpatterns = [
     path('reviews/', views.reviews, name='reviews'),
     path('myshelf/', views.myshelf, name='myshelf'),
 
+    path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]

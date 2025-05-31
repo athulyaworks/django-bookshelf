@@ -11,6 +11,7 @@
       color: #3c2f2f;
       text-align: center;
       border-radius: 10px;
+      position: relative;
     }
 
     .hero-section h1 {
@@ -24,6 +25,25 @@
       font-size: 1.2rem;
       color: #6e584b;
       margin-top: 10px;
+    }
+
+    .greeting {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #4e3b30;
+      margin-top: 10px;
+    }
+
+    .book-count {
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
+      font-size: 0.9rem;
+      color: #5a3e36;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-weight: 500;
     }
 
     .hero-btn {
@@ -45,7 +65,17 @@
 
   <div class="hero-section">
     <h1>📚 Welcome to BookShelf</h1>
+
+    {% if user.is_authenticated %}
+      <p class="greeting">👋 Hello, {{ user.username }}!</p>
+    {% endif %}
+
     <p>Your cozy online library to track, review, and explore books.</p>
+
     <a href="{% url 'book_list' %}" class="hero-btn">📖 View Book Collection</a>
+
+    <div class="book-count">
+      Total Books: <strong>{{ book_count }}</strong>
+    </div>
   </div>
 {% endblock %}

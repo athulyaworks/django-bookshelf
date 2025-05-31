@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>BookShelf</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Quicksand:wght@500&display=swap" rel="stylesheet" />
 
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
     body {
       font-family: 'Libre Baskerville', serif;
       background-color: #fef9f4;
       color: #4b3b2f;
-      padding-bottom: 80px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      flex: 1 0 auto;
+      padding-top: 60px;
+      padding-bottom: 60px; /* space so footer doesn’t overlap */
     }
 
     .navbar {
@@ -35,25 +51,29 @@
       color: #7b4f32 !important;
       margin-right: 15px;
       font-weight: 600;
+      position: relative;
     }
 
     .nav-link:hover {
       color: #b05e3c !important;
     }
 
-    .container {
-      padding-top: 60px;
+    .badge-fav {
+      background-color: #d4a373;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 12px;
+      margin-left: 4px;
     }
 
     footer {
+      flex-shrink: 0;
       background-color: #fff1e5;
       padding: 14px 0;
       text-align: center;
       font-size: 0.9rem;
       color: #7a5c4a;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
       border-top: 1px solid #e0c9b9;
       font-family: 'Quicksand', sans-serif;
     }
@@ -97,15 +117,39 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="{% url 'book_list' %}">Books</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'book_list' %}">
+              📚 Books
+              {% if book_count %}({{ book_count }}){% endif %}
+            </a>
+          </li>
           <li class="nav-item"><a class="nav-link" href="{% url 'genres' %}">Genres</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'reviews' %}">Reviews</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'myshelf' %}">My Shelf</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'myshelf' %}">
+              My Shelf
+              {% if favourite_count and favourite_count > 0 %}
+                <span class="badge-fav">{{ favourite_count }}</span>
+              {% endif %}
+            </a>
+          </li>
           <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+          {% endif %}
         </ul>
 
+        <!-- Search bar -->
+        <form class="d-flex ms-3" method="get" action="{% url 'book_list' %}">
+          <input class="form-control me-2" type="search" name="q" placeholder="Search books..." value="{{ request.GET.q }}" />
+          <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </form>
       </div>
     </div>
   </nav>
@@ -118,7 +162,20 @@
 
   <!-- Footer -->
   <footer>
-    &copy; 2025 BookShelf Club — Made with ☕ & 📖
+    <div class="container text-center">
+      <p>&copy; 2025 BookShelf Club — Made with ☕ & 📖</p>
+      <div class="mt-2">
+        <a href="https://facebook.com" target="_blank" class="me-3 text-decoration-none text-reset">
+          <i class="bi bi-facebook fs-5"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" class="me-3 text-decoration-none text-reset">
+          <i class="bi bi-instagram fs-5"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" class="text-decoration-none text-reset">
+          <i class="bi bi-twitter fs-5"></i>
+        </a>
+      </div>
+    </div>
   </footer>
 
   <!-- Bootstrap JS -->
