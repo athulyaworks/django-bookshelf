@@ -22,29 +22,44 @@
           <div>
             <strong>{{ book.title }}</strong> by {{ book.author }}<br>
             {% if book.genre %}
-              <small class="text-muted">Genre: {{ book.genre.name }}</small>
+              <small class="text-muted">Genre: {{ book.genre.name }}</small><br>
             {% endif %}
+            <small>Status: 
+              {% if book.read_status == 'reading' %}
+                📖 Reading
+              {% elif book.read_status == 'finished' %}
+                ✅ Finished
+              {% else %}
+                ❌ Not Started
+              {% endif %}
+            </small>
           </div>
           
-          <div class="mt-2 mt-sm-0 text-end">
+          <div class="mt-2 mt-sm-0 text-end d-flex align-items-center">
 
-            <!-- Read Status Toggle -->
+            <!-- Toggle Read Status -->
             <a href="{% url 'toggle_read' book.id %}" 
-               class="btn btn-sm btn-outline-secondary" 
-               title="{% if book.is_read %}Mark as unread{% else %}Mark as read{% endif %}">
-               {% if book.is_read %}📖{% else %}📕{% endif %}
+               class="btn btn-sm btn-outline-secondary me-2" 
+               title="Toggle reading status">
+              {% if book.read_status == 'reading' %}
+                📖
+              {% elif book.read_status == 'finished' %}
+                ✅
+              {% else %}
+                ❌
+              {% endif %}
             </a>
 
             <!-- Favourite Toggle -->
             <a href="{% url 'toggle_favourite' book.id %}" 
-               class="btn btn-sm btn-outline-warning ms-2" 
+               class="btn btn-sm btn-outline-warning me-2" 
                title="{% if book.id in favourite_ids %}Remove favourite{% else %}Add favourite{% endif %}">
                {% if book.id in favourite_ids %}⭐{% else %}☆{% endif %}
             </a>
 
             <!-- Delete Button -->
             <a href="{% url 'delete_book' book.id %}" 
-               class="btn btn-sm btn-danger ms-2" 
+               class="btn btn-sm btn-danger" 
                title="Delete book"
                onclick="return confirm('Are you sure you want to delete this book?')">
                🗑️

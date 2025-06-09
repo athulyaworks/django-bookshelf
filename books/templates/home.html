@@ -61,6 +61,17 @@
     .hero-btn:hover {
       background-color: #a78c7b;
     }
+
+    .status-summary {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #5a3e36;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: inline-block;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
   </style>
 
   <div class="hero-section">
@@ -68,6 +79,12 @@
 
     {% if user.is_authenticated %}
       <p class="greeting">👋 Hello, {{ user.username }}!</p>
+
+      <div class="status-summary">
+        ❌ Not Started: {{ status_counts.not_started }} |
+        📖 Reading: {{ status_counts.reading }} |
+        ✅ Finished: {{ status_counts.finished }}
+      </div>
     {% endif %}
 
     <p>Your cozy online library to track, review, and explore books.</p>

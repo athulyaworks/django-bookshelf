@@ -36,9 +36,15 @@ class Favourite(models.Model):
         return f"{self.user.username} - {self.book.title}"
 
 class UserBookStatus(models.Model):
+
+    STATUS_CHOICES = [
+        ('not_started', 'Not Started'),
+        ('reading', 'Reading'),
+        ('finished', 'Finished Reading'),
+    ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='book_statuses')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='user_statuses')
-    is_read = models.BooleanField(default=False)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='not_started')
 
     class Meta:
         unique_together = ('user', 'book')

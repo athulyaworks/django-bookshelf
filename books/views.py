@@ -4,6 +4,7 @@ from .forms import BookForm, ReviewForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from collections import Counter
 
 
 def register(request):
@@ -44,28 +45,38 @@ def login_view(request):
     return render(request, 'login.html')
 
 
+
+
 @login_required
 def home(request):
     user = request.user
     favourite_books_ids = Favourite.objects.filter(user=user).values_list('book_id', flat=True)
-
     books = Book.objects.all()
-    
-    # Fetch all read statuses for this user in one query
-    user_statuses = UserBookStatus.objects.filter(user=user).values_list('book_id', 'is_read')
+
+    # Fetch all statuses in one query
+    user_statuses = UserBookStatus.objects.filter(user=user).values_list('book_id', 'status')
     status_dict = dict(user_statuses)
 
+    # Prepare book attributes and count statuses
+    status_counts = Counter()
     for book in books:
         book.is_favourite = book.id in favourite_books_ids
-        book.is_read = status_dict.get(book.id, False)  # default False if no status
+        book.read_status = status_dict.get(book.id, 'not_started')
+        status_counts[book.read_status] += 1
 
     book_count = books.count()
 
     return render(request, 'home.html', {
         'books': books,
         'book_count': book_count,
-        'user': user
+        'user': user,
+        'status_counts': {
+            'not_started': status_counts.get('not_started', 0),
+            'reading': status_counts.get('reading', 0),
+            'finished': status_counts.get('finished', 0),
+        }
     })
+
 
 
 
@@ -89,12 +100,13 @@ def book_list(request):
 
     favourite_ids = set(Favourite.objects.filter(user=user).values_list('book_id', flat=True))
 
-    user_statuses = UserBookStatus.objects.filter(user=user, book__in=books).values_list('book_id', 'is_read')
+    # Fetch status from UserBookStatus (not just True/False)
+    user_statuses = UserBookStatus.objects.filter(user=user, book__in=books).values_list('book_id', 'status')
     status_dict = dict(user_statuses)
 
     for book in books:
         book.is_favourite = book.id in favourite_ids
-        book.is_read = status_dict.get(book.id, False)
+        book.read_status = status_dict.get(book.id, 'not_started')
 
     book_count = books.count()
 
@@ -128,9 +140,15 @@ def toggle_read(request, book_id):
     book = get_object_or_404(Book, id=book_id)
 
     status, created = UserBookStatus.objects.get_or_create(user=user, book=book)
-    status.is_read = not status.is_read
-    status.save()
 
+    if status.status == 'not_started':
+        status.status = 'reading'
+    elif status.status == 'reading':
+        status.status = 'finished'
+    else:
+        status.status = 'not_started'
+
+    status.save()
     return redirect('book_list')
 
 
